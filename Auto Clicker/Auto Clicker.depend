@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1500101538 source:c:\fun programs\auto clicker\main.cpp
-	<tchar.h>
-	<windows.h>
-	<iostream>
-	<vector>
-	<stdio.h>
-
