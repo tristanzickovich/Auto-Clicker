@@ -51,36 +51,44 @@ class aText:
 		self.pText = text
 
 #functions
+def abortScriptOption():
+	#esc to stop
+	stopKey = 27
+	if (win32api.GetKeyState(stopKey) & (1 << 7)):
+		sys.exit()
+def startScriptOption():
+	#tab to start
+	startKey = 9
+	if (win32api.GetKeyState(startKey) & (1 << 7)):
+		return True
+	return False
 def runScript():
 	if len(sList) < 1:
 		return False
 	else:
 		numTimes = input(" Run script how many times?\n")
 		numTimes = validateInput(0, numTimes)
-		print('\nMinimize This Screen\n')
-		perform_delay(4000,0)
-		try:
-			for x in range(numTimes):
-				dcount = 1
-				print ('\nRunning Script\n')
-				for i in sList:
-					if i[0] == DEF_CLICK:
-						perform_click(cList[i[1]].x,cList[i[1]].y,cList[i[1]].cOffset,cList[i[1]].clkType)
-						print ("%d) click: (%d,%d), offset: %d, type: %d" % (dcount, cList[i[1]].x,cList[i[1]].y,cList[i[1]].cOffset,cList[i[1]].clkType))
-					elif i[0] == DEF_DELAY:
-						perform_delay(dList[i[1]].dTime, dList[i[1]].dOffset)
-						print ("%d) delay: %d, offset: %d" % (dcount, dList[i[1]].dTime, dList[i[1]].dOffset))
-					elif i[0] == DEF_NUMPRESS:
-						perform_numpress(nList[i[1]].pNum)
-						print ("%d) num: %d" % (dcount, nList[i[1]].pNum))
-					elif i[0] == DEF_TEXT:
-						print ("%d) Text: %s" % (dcount, tList[i[1]].pText))
-					dcount += 1
-				print ('\nScript Completed\n')
-		except (KeyboardInterrupt, SystemExit):
-			raise
-		except:
-			print('\nSomething Went Wrong\n')
+		print('\nOpen Desired Screen and Press "TAB" to Begin\n')
+		while 1:
+			if startScriptOption():
+				break
+			perform_delay(100,0)
+		for x in range(numTimes):
+			abortScriptOption()
+			dcount = 1
+			print ('\nRunning Script\n')
+			for i in sList:
+				abortScriptOption()
+				if i[0] == DEF_CLICK:
+					perform_click(cList[i[1]].x,cList[i[1]].y,cList[i[1]].cOffset,cList[i[1]].clkType)
+				elif i[0] == DEF_DELAY:
+					perform_delay(dList[i[1]].dTime, dList[i[1]].dOffset)
+				elif i[0] == DEF_NUMPRESS:
+					perform_numpress(nList[i[1]].pNum)
+				elif i[0] == DEF_TEXT:
+					print ("%d) Text: %s" % (dcount, tList[i[1]].pText))
+				dcount += 1
+			print ('\nScript Completed\n')
 		return True
 		
 def saveScript(filename):
